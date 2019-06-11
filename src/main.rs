@@ -34,7 +34,14 @@ fn call_api() -> Result<Resp, CustomError> {
 fn main() {
     match call_api(){
       Err(custom_error) => {
-        println!("{:?}", custom_error);
+        match custom_error {
+          CustomError::HttpError(e) => {
+            println!("Are you offline?")
+          }
+          CustomError::JsonError(e) => {
+            println!("Invalid response from API")
+          }
+        }
       }
       Ok(resp) => {
         println!("\n#\n# {}\n#\n", resp.quoteText);
